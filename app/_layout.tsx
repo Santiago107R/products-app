@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/presentation/theme/hooks/use-color-scheme';
@@ -29,20 +30,22 @@ export default function RootLayout() {
   if (!fontsLoaded && !error) return <ActivityIndicator size={40} />
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen
-          name="(products-app)/(home)/index"
-          options={{
-            presentation: 'modal',
-            title: 'Home Screen'
-          }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <GestureHandlerRootView>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          {/* <Stack.Screen
+            name="(products-app)/(home)/index"
+            options={{
+              presentation: 'modal',
+              title: 'Home Screen'
+            }} /> */}
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
