@@ -8,10 +8,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/presentation/theme/hooks/use-color-scheme';
 
-import '../global.css'
-
 SplashScreen.preventAutoHideAsync();
-
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -21,8 +18,8 @@ export default function RootLayout() {
     'KanitRegular': require('@/assets/fonts/Kanit-Regular.ttf'),
     'KanitThin': require('@/assets/fonts/Kanit-Thin.ttf'),
   })
-// 
-  useEffect(() => { 
+  // 
+  useEffect(() => {
     if (error) throw error
 
     if (fontsLoaded) SplashScreen.hideAsync()
