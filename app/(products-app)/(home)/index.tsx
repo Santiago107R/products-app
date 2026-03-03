@@ -4,10 +4,11 @@ import { View } from 'react-native'
 
 const HomeScreen = () => {
     return (
-        <View className='pt-20 px-10'>
-            <ThemedText className='font-Kanit-Bold text-light-text text-2xl'>HomeScreen</ThemedText>
-            <ThemedText className='font-Kanit-Regular text-2xl'>HomeScreen</ThemedText>
-            <ThemedText className='font-Kanit-Thin text-2xl'>HomeScreen</ThemedText>
+        <View style={{paddingTop: 20, paddingHorizontal: 10}}>
+            <ThemedText style={{fontFamily: 'KanitBold', fontSize: 25}}>HomeScreen</ThemedText>
+            <ThemedText style={{fontFamily: 'KanitRegular', fontSize: 20}}>HomeScreen</ThemedText>
+            <ThemedText style={{fontFamily: 'KanitThin', fontSize: 18}}>HomeScreen</ThemedText>
+            <ThemedText style={{fontSize: 15}}>HomeScreen</ThemedText>
         </View>
     )
 }

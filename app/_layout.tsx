@@ -1,18 +1,21 @@
-import { useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/presentation/theme/hooks/use-color-scheme';
+import { useThemeColor } from '@/presentation/theme/hooks/use-theme-color';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const backgroundColor = useThemeColor({}, 'background')
+
 
   const [fontsLoaded, error] = useFonts({
     'KanitBold': require('@/assets/fonts/Kanit-Bold.ttf'),
@@ -30,11 +33,11 @@ export default function RootLayout() {
   if (!fontsLoaded && !error) return <ActivityIndicator size={40} />
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ backgroundColor: backgroundColor, flex: 1 }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack
           screenOptions={{
-            headerShown: false
+            headerShown: false,
           }}
         >
           {/* <Stack.Screen
