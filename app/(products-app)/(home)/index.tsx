@@ -1,14 +1,21 @@
-import { ThemedText } from '@/presentation/theme/components/themed-text'
-import React from 'react'
+import { useProducts } from '@/presentation/products/hooks/useProducts'
+import Loading from '@/presentation/theme/components/Loading'
 import { View } from 'react-native'
+import ProductsList from '../../../presentation/products/components/ProductsList';
 
 const HomeScreen = () => {
+
+    const {productsQuery, loadNextPage} = useProducts()
+
+    if (productsQuery.isLoading) {
+        return (
+            <Loading />
+        )
+    }
+
     return (
-        <View style={{paddingTop: 20, paddingHorizontal: 10}}>
-            <ThemedText style={{fontFamily: 'KanitBold', fontSize: 25}}>HomeScreen</ThemedText>
-            <ThemedText style={{fontFamily: 'KanitRegular', fontSize: 20}}>HomeScreen</ThemedText>
-            <ThemedText style={{fontFamily: 'KanitThin', fontSize: 18}}>HomeScreen</ThemedText>
-            <ThemedText style={{fontSize: 15}}>HomeScreen</ThemedText>
+        <View style={{paddingHorizontal: 20}}>
+            <ProductsList products={productsQuery.data?.pages.flatMap((page) => page) ?? []} loadNextPage={loadNextPage}/>
         </View>
     )
 }

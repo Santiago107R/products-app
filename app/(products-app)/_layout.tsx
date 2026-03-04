@@ -1,9 +1,9 @@
 import LogoutIconButton from '@/presentation/auth/components/LogoutIconButton';
 import { useAuthStore } from '@/presentation/auth/store/useAuthStore';
+import Loading from '@/presentation/theme/components/Loading';
 import { useThemeColor } from '@/presentation/theme/hooks/use-theme-color';
 import { Redirect, Stack } from 'expo-router';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
 
 const CheckAuthenticationLayout = () => {
 
@@ -16,7 +16,7 @@ const CheckAuthenticationLayout = () => {
     }, [])
 
     if (status === 'checking') {
-        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 5, }}><ActivityIndicator /></View>
+        return <Loading />
     }
 
     if (status === 'unauthenticated') {
