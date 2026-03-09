@@ -1,24 +1,34 @@
-import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
-import React, { useEffect } from 'react'
-import { Redirect, router, useLocalSearchParams, useNavigation } from 'expo-router'
-import { Formik } from 'formik'
-import { ThemedView } from '../../../presentation/theme/components/themed-view';
-import ThemedTextInput from '@/presentation/theme/components/ThemedTextInput';
-import { useProduct } from '@/presentation/products/hooks/useProduct';
-import Loading from '@/presentation/theme/components/Loading';
+import React, { useEffect } from 'react';
+import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, View } from 'react-native';
+import { Redirect, router, useLocalSearchParams, useNavigation } from 'expo-router';
+import { Formik } from 'formik';
+
+import { Size } from '@/core/products/interfaces/product.interface';
 import ProductImages from '@/presentation/products/components/ProductImages';
-import ThemedButtonGroup from '../../../presentation/theme/components/ThemedButtonGroup';
+import { useProduct } from '@/presentation/products/hooks/useProduct';
+import { useCameraStore } from '@/presentation/store/useCameraStore';
+import Loading from '@/presentation/theme/components/Loading';
+import MenuIconButton from '@/presentation/theme/components/MenuIconButton';
 import ThemedButton from '@/presentation/theme/components/ThemedButton';
-import { Size } from '@/core/products/interfaces/product.interface'
-import MenuIconButton from '@/presentation/theme/components/MenuIconButton'
+import ThemedTextInput from '@/presentation/theme/components/ThemedTextInput';
+import { ThemedView } from '../../../presentation/theme/components/themed-view';
+import ThemedButtonGroup from '../../../presentation/theme/components/ThemedButtonGroup';
 
 const ProductScreen = () => {
 
+    const { selectedImages, clearImages } = useCameraStore()
 
     const { id } = useLocalSearchParams()
     const navigation = useNavigation()
 
     const { productQuery, productMutation } = useProduct(`${id}`)
+
+    useEffect(() => {
+
+        return () => {
+            clearImages();
+        }
+    }, [])
 
     useEffect(() => {
         navigation.setOptions({
@@ -52,7 +62,10 @@ const ProductScreen = () => {
     return (
         <Formik
             initialValues={product}
-            onSubmit={(productLike) => productMutation.mutate(productLike)}
+            onSubmit={(productLike) => productMutation.mutate({
+                ...productLike,
+                images: [...productLike.images, ...selectedImages],
+            })}
 
         >
             {
@@ -60,9 +73,18 @@ const ProductScreen = () => {
                     <KeyboardAvoidingView
                         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                     >
-                        <ScrollView>
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl 
+                                    refreshing={productQuery.isFetching}
+                                    onRefresh={async () => {
+                                        await productQuery.refetch();
+                                    }}
+                                />
+                            }
+                        >
                             <ProductImages
-                                images={values.images}
+                                images={[...product.images, ...selectedImages]}
                             />
 
                             <ThemedView style={{ marginHorizontal: 10, marginTop: 20 }}>
